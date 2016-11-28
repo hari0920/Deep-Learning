@@ -1,6 +1,22 @@
 # Negative Space of Images
 
-Negative space images are the images with just black and white contours.  Figure/ground organisation or occlusion follows the reasoning over discrete contours or regions. [27, 16, 21, 36, 18]
+Negative space images are the images with just black and white contours.  Figure/ground organisation or occlusion follows the reasoning over discrete contours or regions. [27, 16, 21, 36, 18]. Figure/ground organization is a step of perceptual organization which assigns a contour to one of the two abutting regions. It is commonly thought to follow region segmentation, it is an essential step in forming our perception of surfaces, shapes and objects, as vividly demonstrated by the pictures. Occlusion on the other hand, is the concept that two objects that are spatially separated in the 3D world might interfere with each other in the 2D image plane. 
+
+Gibson argues that occlusion boundaries, together with surfaces, are the basis for the perception of the surface layout of a scene
+
+
+#Previous works:
+https://homes.cs.washington.edu/~xren/publication/xren_eccv06_figureground.pdf [Based on shapememes, Pb algorithm]
+https://www.ri.cmu.edu/pub_files/pub4/hoiem_derek_2007_3/hoiem_derek_2007_3.pdf [Occlusion cues + CRF model + Pb]
+http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.650.9285&rep=rep1&type=pdf [Depth ordering]
+http://homes.cs.washington.edu/~luyao/iccv11conc.pdf [Convexity + graph cut algorithm]
+
+http://cs.brown.edu/~pff/segment/ [Graph cut algorithm + code] http://cs.brown.edu/~pff/papers/seg-ijcv.pdf 
+
+
+Notes on previous works:
+* Markov random field based algorithm is capable of depth ordering. ?? T-junctions were used previously in order to capture the difference between the positions of intersections among objects. 
+* Depth ordering is related to the boundary ownership which is inturn figure/ground assignment problem.  3rd paper uses binary edge image where the occlusion boundaries are labelled in white. The paper also suggests a method to capture the boundary convexity. 
 
 ## Initial testing:
 * Testing is done using Tensorflow on Imagenet dataset. 
@@ -124,7 +140,7 @@ Graph laplacians:
 Spectral clustering does a low dimension embedding of the affinity matrix between samples followed by K means on the low dimensional space. A spectral algorithm typically begins with an “affinity matrix” of pairwise relationships between the samples or the variates, and derives a more useful representation of the data from its eigenvalue decomposition (EVD), often using just one or a few eigenvectors (a truncated eigenbasis). [4] uses the spectral embedding as a method of solving perceptual organization problem, mainly image segmentation and figure/ground organization. 
 
 K-means only works well for data that are grouped in elliptically shaped, whereas spectral clustering can theoretically work well for any group. 
-
+  
 Procedure:
 * 100 data points implies 100*100 matrix, where rth row and cth column is the similary between rth data point and cth data point. 
 * Similarity is defined based on the way you want. eg: Euclidean distance, a kernel function of the euclidean distance or a K nearest neighbors approach. 
