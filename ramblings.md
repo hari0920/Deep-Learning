@@ -38,28 +38,29 @@ Lets try some filters to find out which can create such outlines or borders.
 [1] - Uses AI to detect boundaries. 
 
 Points from [1]:
-     * Predicting boundaries by exploiting object level features from a pretreained object classification network. ...Hmmm.. similar to ours;
-     * High level object features inform the low level boundary detection. 
-     * Uses trained VGG net.
-     * Presents improvement on semantic boundary labeling, semantic segmentation and object proposal generation. 
-     * Boundary prediction:
-       		* Spectral methods - uses eigenvalue [MCG detector, gPb detector, PMI detector and Normalized cuts]
-		* Supervised discriminative - Sketch tokens, Structured edges, and sparse code gradients(SCG)
-		* Deep learning - N4 fields (dictionary learning and Nearest neighbor), DeepNet (CNN), DeepEdge (multi-scale bifurcated network to perform contour detection).
-    * This paper doesnt use the multi-scale bifurcated network. (Can run in real time).
-    * The paper avoids feature engineering by learning from human annotated data. 
-    * Method and architecture:
-		* Extract candidate contour points with a high recall. using SE edge detector. ** This step is done inorder to reduce the computational cost. ** 
-		* Sample up the original image to 1100*1100. ** Done inorder to reduce the loss of information ** 
-		* Uses VGGnet as a model because it has been trained with large number of object classes (1000s). ** To preserve spatial information we use a fully convolutional network. ** Spatial information is crucial for accurate boundary detection. 
-		* Feature interpolation :
-		  	  ^^ After the up-sampled image passes through all the 16 conv layers for a selected candidate contour point, we find its corresponding point in the feature maps. The values are not exact. SO we perform feature interpolation by finding the 4 nearest points and average their activation values. 
-		* Feature interpolation helps to predict boundaries efficiently. 
-		* We feed the 5504 dimensional feature vector to funlly connected layers that are optimized to human agreement criterion. Whaaat.
-		* It aims at mimicking the judgement of human labelers.
-		* finally fed into two fully connected layers. 
-    * To learn the weights in the two fc layers, we train our model to optimize the least square error of the regression. 
-    * BSDS500 dataset involves "orphan boundaries", these are the boundaries marked by only one or two human annotators. 
+
+* Predicting boundaries by exploiting object level features from a pretreained object classification network. ...Hmmm.. similar to ours;
+* High level object features inform the low level boundary detection. 
+* Uses trained VGG net.
+* Presents improvement on semantic boundary labeling, semantic segmentation and object proposal generation. 
+* Boundary prediction:
+       	* Spectral methods - uses eigenvalue [MCG detector, gPb detector, PMI detector and Normalized cuts]
+	* Supervised discriminative - Sketch tokens, Structured edges, and sparse code gradients(SCG)
+	* Deep learning - N4 fields (dictionary learning and Nearest neighbor), DeepNet (CNN), DeepEdge (multi-scale bifurcated network to perform contour detection).
+* This paper doesnt use the multi-scale bifurcated network. (Can run in real time).
+* The paper avoids feature engineering by learning from human annotated data. 
+* Method and architecture:
+	* Extract candidate contour points with a high recall. using SE edge detector. ** This step is done inorder to reduce the computational cost. ** 
+	* Sample up the original image to 1100*1100. ** Done inorder to reduce the loss of information ** 
+	* Uses VGGnet as a model because it has been trained with large number of object classes (1000s). ** To preserve spatial information we use a fully convolutional network. ** Spatial information is crucial for accurate boundary detection. 
+	* Feature interpolation :
+	  	  ^^ After the up-sampled image passes through all the 16 conv layers for a selected candidate contour point, we find its corresponding point in the feature maps. The values are not exact. SO we perform feature interpolation by finding the 4 nearest points and average their activation values. 
+	* Feature interpolation helps to predict boundaries efficiently. 
+	* We feed the 5504 dimensional feature vector to funlly connected layers that are optimized to human agreement criterion. Whaaat.
+	* It aims at mimicking the judgement of human labelers.
+	* finally fed into two fully connected layers. 
+* To learn the weights in the two fc layers, we train our model to optimize the least square error of the regression. 
+* BSDS500 dataset involves "orphan boundaries", these are the boundaries marked by only one or two human annotators. 
 
 ## Notes of caffe installation:
       Caffe installation is a pain. It can lead to soo many stupid bugs while installation. 
