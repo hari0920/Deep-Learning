@@ -1,6 +1,6 @@
 # Negative Space of Images
 
-Negative space images are the images with just black and white contours. 
+Negative space images are the images with just black and white contours.  Figure/ground organisation or occlusion follows the reasoning over discrete contours or regions. [27, 16, 21, 36, 18]
 
 ## Initial testing:
 * Testing is done using Tensorflow on Imagenet dataset. 
@@ -30,14 +30,17 @@ Results:
 
 It comprehended the nose and mouth together to be a vase. Wow. Breastplate seriously? Maybe the eyes :P
 
-# Now we will try to find why is it so?
+## Now we will try to find why is it so?
 
 One reason could be that the network doesnt learn much about white well pixels. Shape is important for an image, curvature. The depth of an image in white is literally nothing.
 
 Lets try some filters to find out which can create such outlines or borders. 
 [1] - Uses AI to detect boundaries. 
 
-Points from [1]:
+## Paper Reviews
+
+Points from [1]: 
+       High-for-low and low-for-high: Efficient boundary detection from deep object features and its application to high-level vision.
 
 * Predicting boundaries by exploiting object level features from a pretreained object classification network. ...Hmmm.. similar to ours;
 * High level object features inform the low level boundary detection. 
@@ -62,6 +65,17 @@ Points from [1]:
 * To learn the weights in the two fc layers, we train our model to optimize the least square error of the regression. 
 * BSDS500 dataset involves "orphan boundaries", these are the boundaries marked by only one or two human annotators. 
 
+
+Points from [2]:
+       Semantic Segmentation with Boundary Neural Fields
+
+Points from [4]:
+       Affinity CNN: Learning Pixel-Centric Pairwise Relations for Figure/Ground Embedding
+
+* From an affinity matrix describing pairwise relationships between pixels. The paper trains a CNN to directly predict the pairwise relationships that define this affinity matrix. This is later used for figure/ground organisation. 
+* Better than Conditional Random field- based globalisation methods on deep neural networks ??? Eg:??? 
+* 
+
 ## Notes of caffe installation:
       Caffe installation is a pain. It can lead to soo many stupid bugs while installation. 
 
@@ -73,16 +87,59 @@ Points from [1]:
 * Dont forget to set $PYTHON_PATH and CAFFE_ROOT. 
 * `make all` fails in mac osx. No clue why. have to find out.
 
-errors:
-Import _caffe failed: Meaning pycaffe wasnt compiled due to some modules from pip not installed.
-Import skiimage.io failed: scikit-image not installed; Check if cython is installed.
+ Errors:
 
-## Spectral clustering. 
+* Import _caffe failed: Meaning pycaffe wasnt compiled due to some modules from pip not installed.
+* Import skiimage.io failed: scikit-image not installed; Check if cython is installed.
+
+## Spectral clustering and Affinities
+
+  ``` Why I think I am reading on spectral clustering????
+      The black and white pixels tend to form clusters in the image naturally in a negative space image. It could be possibility that we can use this clustering to detect shapes and contours. Who knows? 
+      ```
+
+It is different from K-means clustering. Spectral clustering is about connectivity between the points in the space. Affinity is a metric that determines how close two points are in the space. [3] states that spectral clustering is more efficient than K-means.  
+
+Spectral clustering method deals with similarity graphs which are undirected weighted graphs [ Wij = Wji ]. Degree is defined to be sum of all the weights of the edges. Degree matrix is the diagonal matrix with values d1,d2,....dn. One of the aims while constructing similarity graphs is to model the local neighborhood relationships between the data points.
+
+Ai,j = exp(-a ||Xi - Xj||^2)
+
+Ai,j ~= 1 => the points are close to each other
+Ai,j ~= 0 => the points are far apart
+
+Q: What happens if points are far apart just because they belong to different clusters?
+A: ?? Maybe keep a distance factor separately. Not sure if this is a good method though.
+
+* e-neighborhood graph : We connect all points whose pairwise distances are smaller than e. 
+* k-nearest neighborhood : Connect if Vi is among the k-nearest neighbors of Vj.
+* fully connected graph : connect all points with positive similarity with each other. Eg: Gaussian similarity function. the sigma controls the width of the neighborhood. 
+
+Graph laplacians: 
+* Simple laplacian L = D - A
+* Normalized Laplacian Ln = D^-0.5LD^-0.5
+* Generalized Laplacian Lg = D^-1L 
+* Relaxed Laplacian Lp = L - aD 
+* Ng, Jorndan and weiss Laplacian Lnjw = D^-.5AD^-.5 where Ai,i = 0 
+
+Spectral clustering does a low dimension embedding of the affinity matrix between samples followed by K means on the low dimensional space. A spectral algorithm typically begins with an “affinity matrix” of pairwise relationships between the samples or the variates, and derives a more useful representation of the data from its eigenvalue decomposition (EVD), often using just one or a few eigenvectors (a truncated eigenbasis). [4] uses the spectral embedding as a method of solving perceptual organization problem, mainly image segmentation and figure/ground organization. 
+
+K-means only works well for data that are grouped in elliptically shaped, whereas spectral clustering can theoretically work well for any group. 
+
+Procedure:
+* 100 data points implies 100*100 matrix, where rth row and cth column is the similary between rth data point and cth data point. 
+* Similarity is defined based on the way you want. eg: Euclidean distance, a kernel function of the euclidean distance or a K nearest neighbors approach. 
+* We create a Laplacian matrix.
+* We calculate eigenvectors or eigenvalues of the laplacian matrix. 
+* Use K-means algorithm on the eigenvalues corresponding to k smallest eigenvectors. 
+
+Now the similarity function can be based on contrast of the pixels, or anything else. But in the case of negative images, all we have black and white pixels. 
+
+BSDS have images of size 481*321 = 154401 pizels. The similarity matrix would be huge. 154401*154401 = 23839668801. 
+
+Kernel trick:
+       It avoids the explicit mapping that is needed to get linear learning algorithms to learn a non linear function or boundary. 
 
 
-Points from [2]:
-
-    
 Aim :
 
 * How to find these contours?
@@ -90,5 +147,13 @@ Aim :
     
 
 References:
+
 [1] https://arxiv.org/pdf/1504.06201v3.pdf - High-for-low and low-for-high: Efficient boundary detection from deep object features and its application to high-level vision.
 
+[2] https://arxiv.org/pdf/1511.02674v1.pdf - Semantic Segmentation with Boundary Neural Fields
+
+[3] http://www.kyb.mpg.de/fileadmin/user_upload/files/publications/attachments/Luxburg07_tutorial_4488%5B0%5D.pdf - A Tutorial on spectral clustering. 
+
+[4] http://ttic.uchicago.edu/~mmaire/papers/pdf/affinity_cnn_cvpr2016.pdf - Affinity CNN: Learning Pixel-Centric Pairwise Relations for Figure/Ground Embedding
+
+[5] https://pdfs.semanticscholar.org/33d1/080b0ce36350d75bda8a065190e5aefaa3fb.pdf - A unifying theorem for spectral embedding and clustering
