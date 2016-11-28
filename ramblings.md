@@ -6,27 +6,27 @@ Gibson argues that occlusion boundaries, together with surfaces, are the basis f
 
 
 #Previous works:
-https://homes.cs.washington.edu/~xren/publication/xren_eccv06_figureground.pdf [Based on shapememes, Pb algorithm]
-https://www.ri.cmu.edu/pub_files/pub4/hoiem_derek_2007_3/hoiem_derek_2007_3.pdf [Occlusion cues + CRF model + Pb]
-http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.650.9285&rep=rep1&type=pdf [Depth ordering]
-http://homes.cs.washington.edu/~luyao/iccv11conc.pdf [Convexity + graph cut algorithm]
+* [Based on shapememes, Pb algorithm] (https://homes.cs.washington.edu/~xren/publication/xren_eccv06_figureground.pdf) 
+* [Occlusion cues + CRF model + Pb] (https://www.ri.cmu.edu/pub_files/pub4/hoiem_derek_2007_3/hoiem_derek_2007_3.pdf)
+* [Depth ordering] (http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.650.9285&rep=rep1&type=pdf)
+* [Convexity + graph cut algorithm] (http://homes.cs.washington.edu/~luyao/iccv11conc.pdf)
+* [Graph cut algorithm + code]  (http://cs.brown.edu/~pff/segment/)
 
-http://cs.brown.edu/~pff/segment/ [Graph cut algorithm + code] http://cs.brown.edu/~pff/papers/seg-ijcv.pdf 
 
-
-Notes on previous works:
+##Notes on previous works:
 * Markov random field based algorithm is capable of depth ordering. ?? T-junctions were used previously in order to capture the difference between the positions of intersections among objects. 
 * Depth ordering is related to the boundary ownership which is inturn figure/ground assignment problem.  3rd paper uses binary edge image where the occlusion boundaries are labelled in white. The paper also suggests a method to capture the boundary convexity. 
 
-## Initial testing:
+#Initial testing:
 * Testing is done using Tensorflow on Imagenet dataset. 
 Lets try to test how well negative space images are being recognised in Imagenet and AlexNet. 
 
 Lets take the image of a dog, as they are being the category trained to a maximum. 
 
-Image link: [https://s-media-cache-ak0.pinimg.com/736x/3d/21/6c/3d216cf64b7ffa13a8b93e5d9ba0c597.jpg]
+Image:
+![Negative-dog] (https://s-media-cache-ak0.pinimg.com/736x/3d/21/6c/3d216cf64b7ffa13a8b93e5d9ba0c597.jpg)
 
-Results On ImageNet:
+##Results On ImageNet:
 * bow tie, bow-tie, bowtie (score = 0.93169)
 * sunglasses, dark glasses, shades (score = 0.00528)
 * sunglass (score = 0.00244)
