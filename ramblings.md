@@ -205,13 +205,12 @@ References:
 
 
 ## Interesting finds:
-   	       '''
+
    	       This section is for fun reads apart from the main topic.
-	       '''
- 
+	        
 * [Architecture 2030] (http://arch2030.cs.washington.edu/) 
 * [100 Quadrillion Live Pixels] (https://www.youtube.com/watch?v=XS7kuod1vSQ&t=14m50s). It would be interesting to speculate on ideas from various fields which would exist 15-20 years ahead. [slides](http://www.cs.cmu.edu/~kayvonf/misc/kayvonf_arch2030.pdf)
 * [Piotr's computer vision toolbox] (https://pdollar.github.io/toolbox/) - I dont think i will ever use matlab. But still :P & The author of the library is also has worked on MScoco dataset. Three crazy good projects. [Github] (https://github.com/pdollar/edges)
  
-TO-READ:
+##TO-READ:
 * http://vision.cs.utexas.edu/projects/foregroundfocus/foregroundfocus.html
