@@ -4,17 +4,32 @@ Negative space images are the images with just black and white contours.  Figure
 
 Gibson argues that occlusion boundaries, together with surfaces, are the basis for the perception of the surface layout of a scene
 
+Prof Jianbo shi has done extensive work in the field of negative-space images. There are a lot of papers which discuss the theories of affinities and graph based algorithms which work in the field of detecting features which are helpgul for segmentation of images. 
+
 #Previous works:
 * [Based on shapememes, Pb algorithm] (https://homes.cs.washington.edu/~xren/publication/xren_eccv06_figureground.pdf) 
 * [Occlusion cues + CRF model + Pb] (https://www.ri.cmu.edu/pub_files/pub4/hoiem_derek_2007_3/hoiem_derek_2007_3.pdf)
 * [Depth ordering] (http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.650.9285&rep=rep1&type=pdf)
 * [Convexity + graph cut algorithm] (http://homes.cs.washington.edu/~luyao/iccv11conc.pdf)
 * [Graph cut algorithm + code]  (http://cs.brown.edu/~pff/segment/)
-
+* [Object specific figure-ground segregation] (http://www.cs.cmu.edu/afs/cs/user/xingyu/www/papers/yus_object.pdf) - Paper deals with proper figure-ground separation. 
+* [Affinity CNN] (http://ttic.uchicago.edu/~mmaire/papers/pdf/affinity_cnn_cvpr2016.pdf) - Affinity CNN - First attempt to involve deep nets into Affinities. 
 
 ##Notes on previous works:
 * Markov random field based algorithm is capable of depth ordering. ?? T-junctions were used previously in order to capture the difference between the positions of intersections among objects. 
 * Depth ordering is related to the boundary ownership which is inturn figure/ground assignment problem.  3rd paper uses binary edge image where the occlusion boundaries are labelled in white. The paper also suggests a method to capture the boundary convexity. 
+* The 4th paper does a graph cut on the image and segments to 6-8 superpixels. Graph cut algorithm is super fast and efficient. The second step is to perform concave arc detection. They manually classify into three concavity contexts. 
+      * Preprocessing : compute the segmentation and find the concave arcs. 
+          * B-spline curve algorithm is used to smooth the contour and reduce the noise. 
+	  * A minimum enclosing rectangle is drawn for the superpixel and the contour is split into 4 sections. 
+	  * then they perform hierarchical segmentation on the section to obtain the curvature of the arcs in the section. 
+      * model construction : Build a weighted graph on the candidate superpixels and find the distance between the vertices
+      * clustering : Bi-partition the graph and obtain the salient object. 
+* 5th paper logic:
+      * Detect patches and edges
+      * build relational graphs for patches and pixel grouping. 
+      * They produce pixel grouping, patch grouping , pixel and patch correspondance cues separately and integrate them through an integration model.
+      * 
 
 #Initial testing:
 * Testing is done using Tensorflow on Imagenet dataset. 
@@ -85,11 +100,22 @@ Points from [2]:
        Semantic Segmentation with Boundary Neural Fields
 
 Points from [4]:
-       Affinity CNN: Learning Pixel-Centric Pairwise Relations for Figure/Ground Embedding
+       Affinity CNN: Learning Pixel-Centric Pairwise Relations for Figure/Ground Embedding	
 
 * From an affinity matrix describing pairwise relationships between pixels. The paper trains a CNN to directly predict the pairwise relationships that define this affinity matrix. This is later used for figure/ground organisation. 
 * Better than Conditional Random field- based globalisation methods on deep neural networks ??? Eg:??? 
-* 
+* Networks dont focus on image segmentation as much as they do for edge detection. 
+* Previously CRFs were used in semantic segmentation with deep convnets. This paper involves a technique called angular embedding. They claim it to be a more natural inference algorithm XS
+
+
+Points from [6]:
+* Affinity functions traditionally use image intensity, spatial derivatives, texture, or color to estimate the degree to which the nodes correspond to the same segment. This paper aims at handling and creating affinity functions convolutionally. 
+* The performance of graph based algorithms sometimes can be hampered by poor choice of affinity functions. 
+* The network contains 4 layers of convolutions with 6 feature maps and three output images. 
+* Features im an image are detected using the feature maps or filters of the Wab factor. 
+* The nodes of the graph represent image voxels, which form a three dimensional cubic lattice. The affinity graph is considered to be three different images, each representing the affinities of the edges of a particular direction. 
+* The graph partitioning algorithms accomplish image segmentation by cutting the affinity graph into discrete objects. 
+* The network comprises of 3 hidden layers, each containing 6 feature maps. All the filters are of the size 5\*5\*5. CN contians 4 convoltions between the input and output, so a single output voxel is 17***3. 
 
 ## Notes of caffe installation:
       Caffe installation is a pain. It can lead to soo many stupid bugs while installation. 
@@ -154,12 +180,14 @@ BSDS have images of size 481*321 = 154401 pizels. The similarity matrix would be
 Kernel trick:
        It avoids the explicit mapping that is needed to get linear learning algorithms to learn a non linear function or boundary. 
 
+## Interesting occlusion
+Seeing through water. There is a work by jiobhi shi on recovering the image from the effect of snell's law of refraction through water. Idea is again based on affinity matrix with clustering and it is by Efros. Lol, he is the prof under whom yong jae lee graduated. Wow. Nice find :P
 
 Aim :
 
 * How to find these contours?
 * How to color based on these contours?
-    
+* How can Affinity graphs be generated using CNNs?     
 
 References:
 
@@ -172,3 +200,18 @@ References:
 [4] http://ttic.uchicago.edu/~mmaire/papers/pdf/affinity_cnn_cvpr2016.pdf - Affinity CNN: Learning Pixel-Centric Pairwise Relations for Figure/Ground Embedding
 
 [5] https://pdfs.semanticscholar.org/33d1/080b0ce36350d75bda8a065190e5aefaa3fb.pdf - A unifying theorem for spectral embedding and clustering
+
+[6] http://www.mitpressjournals.org/doi/pdf/10.1162/neco.2009.10-08-881 - Convolutional networks can learn to generate affinity graphs for image segmentation. 
+
+
+## Interesting finds:
+   	       '''
+   	       This section is for fun reads apart from the main topic.
+	       '''
+ 
+* [Architecture 2030] (http://arch2030.cs.washington.edu/) 
+* [100 Quadrillion Live Pixels] (https://www.youtube.com/watch?v=XS7kuod1vSQ&t=14m50s). It would be interesting to speculate on ideas from various fields which would exist 15-20 years ahead. [slides](http://www.cs.cmu.edu/~kayvonf/misc/kayvonf_arch2030.pdf)
+* [Piotr's computer vision toolbox] (https://pdollar.github.io/toolbox/) - I dont think i will ever use matlab. But still :P & The author of the library is also has worked on MScoco dataset. Three crazy good projects. [Github] (https://github.com/pdollar/edges)
+ 
+TO-READ:
+* http://vision.cs.utexas.edu/projects/foregroundfocus/foregroundfocus.html
