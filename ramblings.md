@@ -1,9 +1,8 @@
 # Negative Space of Images
 
-Negative space images are the images with just black and white contours.  Figure/ground organisation or occlusion follows the reasoning over discrete contours or regions. [27, 16, 21, 36, 18]. Figure/ground organization is a step of perceptual organization which assigns a contour to one of the two abutting regions. It is commonly thought to follow region segmentation, it is an essential step in forming our perception of surfaces, shapes and objects, as vividly demonstrated by the pictures. Occlusion on the other hand, is the concept that two objects that are spatially separated in the 3D world might interfere with each other in the 2D image plane. 
+Negative space images are the images with just black and white contours.  Figure/ground organisation or occlusion follows the reasoning over discrete contours or regions. Figure/ground organization is a step of perceptual organization which assigns a contour to one of the two abutting regions. It is commonly thought to follow region segmentation, it is an essential step in forming our perception of surfaces, shapes and objects, as vividly demonstrated by the pictures. Occlusion on the other hand, is the concept that two objects that are spatially separated in the 3D world might interfere with each other in the 2D image plane. 
 
 Gibson argues that occlusion boundaries, together with surfaces, are the basis for the perception of the surface layout of a scene
-
 
 #Previous works:
 * [Based on shapememes, Pb algorithm] (https://homes.cs.washington.edu/~xren/publication/xren_eccv06_figureground.pdf) 
@@ -23,8 +22,8 @@ Lets try to test how well negative space images are being recognised in Imagenet
 
 Lets take the image of a dog, as they are being the category trained to a maximum. 
 
-Image:
 ![Negative-dog] (https://s-media-cache-ak0.pinimg.com/736x/3d/21/6c/3d216cf64b7ffa13a8b93e5d9ba0c597.jpg)
+![Graph-cut-dog] (images/graph_cut.ppm?raw=true)
 
 ##Results On ImageNet:
 * bow tie, bow-tie, bowtie (score = 0.93169)
