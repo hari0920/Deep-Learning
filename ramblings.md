@@ -183,7 +183,24 @@ Kernel trick:
 ## Interesting occlusion
 Seeing through water. There is a work by jiobhi shi on recovering the image from the effect of snell's law of refraction through water. Idea is again based on affinity matrix with clustering and it is by Efros. Lol, he is the prof under whom yong jae lee graduated. Wow. Nice find :P
 
-Aim :
+## Python program to predict the affinity graphs 
+
+### Initially followed theory 
+
+#### Zahn's method:
+ It comprised of breaking the MST edges with large weights. The inadequency of breaking large edges would result in high variability region being split into multiple regions.
+
+#### Urquhart's method:
+ It prevents the above shortcoming by normalizing the weight of an edge using the smallest weight incident on the vertices touching that edge. 
+
+#### Uniformity method:
+ Splitting and merging regions according to how well each region fits some uniformity criterion .....what???
+ 
+#### Graph cut method:
+ The internal difference of a component is taken to be the minimum spanning tree of the component. The difference betweenn the two compnenets to be the minimum weight edge connecting the two components.If there is no edge connecting C1 and C2 then we let dif(C1,C2) to be infinity. 
+Kruskal's algorithm - Minimum spanning tree - finds an edge of the least possible weight that connects any two trees in a forest. It finds the subset of the edges that form a tree that includes every vertex, where the total weight of all the edges in the tree are minimized. 
+
+Aim
 
 * How to find these contours?
 * How to color based on these contours?
